@@ -1,0 +1,13 @@
+---
+# Common role handlers
+
+- name: Restart timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+
+- name: Verify swap disabled
+  ansible.builtin.command: swapon --show
+  register: common_swap_status
+  changed_when: false
+  failed_when: swap_status.stdout | length > 0

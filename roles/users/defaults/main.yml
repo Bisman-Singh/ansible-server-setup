@@ -1,0 +1,19 @@
+---
+# Users role defaults
+
+# Admin user account name
+users_admin_user: "deploy"
+
+# Groups the admin user should belong to
+users_admin_groups:
+  - sudo
+  - docker
+
+# SSH public keys to authorize for the admin user
+users_ssh_authorized_keys: []
+
+# Whether to remove default/insecure users
+users_remove_default_users: false
+
+# List of users to remove
+users_to_remove: []

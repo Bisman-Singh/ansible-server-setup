@@ -1,0 +1,67 @@
+---
+# =============================================================================
+# Common Role - Base system configuration
+# =============================================================================
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  register: common_apt_cache
+  retries: 3
+  delay: 10
+  until: apt_cache_update is success
+
+- name: Upgrade all packages to latest version
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: true
+    autoclean: true
+  register: common_apt_upgrade
+  retries: 2
+  delay: 15
+  until: apt_upgrade is success
+
+- name: Install essential packages
+  ansible.builtin.apt:
+    name: "{{ common_essential_packages }}"
+    state: present
+  register: common_pkg_install
+  retries: 3
+  delay: 10
+  until: pkg_install is success
+
+- name: Set system timezone
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+  notify: Restart timesyncd
+
+- name: Ensure systemd-timesyncd is enabled and running
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: started
+    enabled: true
+
+- name: Set system hostname
+  ansible.builtin.hostname:
+    name: "{{ common_hostname }}"
+
+- name: Update /etc/hosts with hostname
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ common_hostname }}"
+    state: present
+
+- name: Disable swap (runtime)
+  ansible.builtin.command: swapoff -a
+  when: common_disable_swap
+  changed_when: false
+
+- name: Remove swap entries from /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '\sswap\s'
+    state: absent
+  when: common_disable_swap
+  notify: Verify swap disabled

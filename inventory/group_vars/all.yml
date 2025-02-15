@@ -1,0 +1,148 @@
+---
+# =============================================================================
+# Global Variables - ansible-server-setup
+# =============================================================================
+# Override these variables in your inventory or playbook as needed.
+
+# -----------------------------------------------------------------------------
+# Common Role
+# -----------------------------------------------------------------------------
+
+# System timezone (timedatectl list-timezones for options)
+common_timezone: "UTC"
+
+# System hostname
+common_hostname: "server01"
+
+# Whether to disable swap on the target host
+common_disable_swap: false
+
+# Essential packages to install
+common_essential_packages:
+  - curl
+  - wget
+  - vim
+  - htop
+  - jq
+  - unzip
+  - git
+  - net-tools
+  - tmux
+
+# -----------------------------------------------------------------------------
+# Users Role
+# -----------------------------------------------------------------------------
+
+# Admin user account name
+users_admin_user: "deploy"
+
+# Groups the admin user should belong to
+users_admin_groups:
+  - sudo
+  - docker
+
+# SSH public keys to authorize for the admin user
+users_ssh_authorized_keys: []
+# Example:
+#   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG...example user@workstation"
+
+# Whether to remove default insecure users
+users_remove_default_users: false
+
+# List of users to remove (only used when remove_default_users is true)
+users_to_remove: []
+# Example:
+#   - "guest"
+
+# -----------------------------------------------------------------------------
+# SSH Hardening Role
+# -----------------------------------------------------------------------------
+
+# SSH listen port
+ssh_port: 22
+
+# Users allowed to SSH in (AllowUsers directive)
+ssh_allow_users:
+  - "deploy"
+
+# Whether to permit root login via SSH
+ssh_permit_root: false
+
+# Whether to allow password-based authentication
+ssh_password_auth: false
+
+# Maximum authentication attempts before disconnecting
+ssh_max_auth_tries: 3
+
+# Login grace time in seconds
+ssh_login_grace_time: 30
+
+# Client alive interval in seconds (keepalive)
+ssh_client_alive_interval: 300
+
+# Number of client alive messages before disconnect
+ssh_client_alive_count_max: 2
+
+# -----------------------------------------------------------------------------
+# Firewall Role
+# -----------------------------------------------------------------------------
+
+# List of ports to allow through UFW (include your SSH port here)
+firewall_allowed_ports:
+  - "{{ ssh_port }}"
+
+# Additional ports to open (e.g., 80, 443, 9100)
+firewall_additional_ports: []
+# Example:
+#   - "80/tcp"
+#   - "443/tcp"
+#   - "9100/tcp"
+
+# -----------------------------------------------------------------------------
+# Docker Role
+# -----------------------------------------------------------------------------
+
+# Docker edition to install (ce = Community Edition)
+docker_edition: "ce"
+
+# Users to add to the docker group
+docker_users:
+  - "{{ admin_user }}"
+
+# Docker daemon log rotation - max size per log file
+docker_log_max_size: "10m"
+
+# Docker daemon log rotation - max number of log files
+docker_log_max_file: "3"
+
+# -----------------------------------------------------------------------------
+# Node Exporter Role
+# -----------------------------------------------------------------------------
+
+# Version of node_exporter to install
+node_exporter_version: "1.8.2"
+
+# Port node_exporter listens on
+node_exporter_port: 9100
+
+# Directory for textfile collector metrics
+node_exporter_textfile_dir: "/var/lib/node_exporter/textfile_collector"
+
+# -----------------------------------------------------------------------------
+# Fail2ban Role
+# -----------------------------------------------------------------------------
+
+# Maximum retries before banning an IP
+fail2ban_maxretry: 5
+
+# Ban duration in seconds (3600 = 1 hour)
+fail2ban_bantime: 3600
+
+# Time window in seconds to count failures
+fail2ban_findtime: 600
+
+# Enable the SSH jail
+fail2ban_ssh_enabled: true
+
+# Enable the nginx jail (set to true if running nginx)
+fail2ban_nginx_enabled: false

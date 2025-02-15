@@ -1,0 +1,43 @@
+---
+# =============================================================================
+# Firewall Role - UFW configuration
+# =============================================================================
+
+- name: Install UFW
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Set UFW default policy to deny incoming
+  community.general.ufw:
+    direction: incoming
+    default: deny
+
+- name: Set UFW default policy to allow outgoing
+  community.general.ufw:
+    direction: outgoing
+    default: allow
+
+- name: Allow SSH port through UFW
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+    comment: "Allow SSH"
+  loop: "{{ firewall_allowed_ports }}"
+
+- name: Allow additional ports through UFW
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.split('/')[0] }}"
+    proto: "{{ item.split('/')[1] | default('tcp') }}"
+    comment: "Allow port {{ item }}"
+  loop: "{{ firewall_additional_ports }}"
+  when: firewall_additional_ports | length > 0
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    logging: "on"

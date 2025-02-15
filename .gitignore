@@ -1,0 +1,37 @@
+# Ansible retry files
+*.retry
+
+# Vault password file
+.vault_pass
+.vault_password
+
+# Real inventory (keep example only)
+inventory/hosts.ini
+inventory/production.ini
+inventory/staging.ini
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+*.key
+secrets.yml
+vault.yml

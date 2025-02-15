@@ -1,0 +1,27 @@
+---
+# SSH Hardening role defaults
+
+# SSH listen port
+ssh_port: 22
+
+# Users allowed to log in via SSH
+ssh_allow_users:
+  - "deploy"
+
+# Permit root login (true/false)
+ssh_permit_root: false
+
+# Allow password authentication (true/false)
+ssh_password_auth: false
+
+# Maximum authentication attempts before disconnecting
+ssh_max_auth_tries: 3
+
+# Login grace time in seconds
+ssh_login_grace_time: 30
+
+# Client alive interval in seconds
+ssh_client_alive_interval: 300
+
+# Client alive count max
+ssh_client_alive_count_max: 2

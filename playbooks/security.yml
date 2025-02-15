@@ -1,0 +1,24 @@
+---
+# =============================================================================
+# Security Playbook - Hardening Only
+# =============================================================================
+# Applies security-focused roles to harden an existing server.
+#
+# Usage:
+#   ansible-playbook playbooks/security.yml
+#   ansible-playbook playbooks/security.yml --limit webservers
+
+- name: Apply security hardening to Linux servers
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: ssh-hardening
+      tags: [ssh, security]
+
+    - role: firewall
+      tags: [firewall, security]
+
+    - role: fail2ban
+      tags: [fail2ban, security]

@@ -1,0 +1,17 @@
+---
+# Fail2ban role defaults
+
+# Maximum retries before banning
+fail2ban_maxretry: 5
+
+# Ban duration in seconds (3600 = 1 hour)
+fail2ban_bantime: 3600
+
+# Time window in seconds to count failures
+fail2ban_findtime: 600
+
+# Enable SSH jail
+fail2ban_ssh_enabled: true
+
+# Enable nginx jail
+fail2ban_nginx_enabled: false

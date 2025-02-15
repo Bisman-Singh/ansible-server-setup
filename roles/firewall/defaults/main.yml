@@ -1,0 +1,9 @@
+---
+# Firewall role defaults
+
+# Ports to allow through UFW
+firewall_allowed_ports:
+  - "{{ ssh_port }}"
+
+# Additional ports to open (e.g., "80/tcp", "443/tcp")
+firewall_additional_ports: []

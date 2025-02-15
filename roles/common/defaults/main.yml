@@ -1,0 +1,23 @@
+---
+# Common role defaults
+
+# System timezone
+common_timezone: "UTC"
+
+# System hostname
+common_hostname: "server01"
+
+# Disable swap on the target host
+common_disable_swap: false
+
+# Essential packages to install
+common_essential_packages:
+  - curl
+  - wget
+  - vim
+  - htop
+  - jq
+  - unzip
+  - git
+  - net-tools
+  - tmux

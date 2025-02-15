@@ -1,0 +1,13 @@
+---
+# Docker role defaults
+
+# Docker edition (ce = Community Edition)
+docker_edition: "ce"
+
+# Users to add to the docker group
+docker_users:
+  - "{{ admin_user | default('deploy') }}"
+
+# Docker daemon log rotation settings
+docker_log_max_size: "10m"
+docker_log_max_file: "3"

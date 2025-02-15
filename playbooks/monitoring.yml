@@ -1,0 +1,18 @@
+---
+# =============================================================================
+# Monitoring Playbook - Metrics Collection Setup
+# =============================================================================
+# Installs and configures monitoring agents on target hosts.
+#
+# Usage:
+#   ansible-playbook playbooks/monitoring.yml
+#   ansible-playbook playbooks/monitoring.yml --limit webservers
+
+- name: Set up monitoring on Linux servers
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: node-exporter
+      tags: [node-exporter, monitoring]

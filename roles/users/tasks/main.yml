@@ -1,0 +1,44 @@
+---
+# =============================================================================
+# Users Role - Admin user creation and configuration
+# =============================================================================
+
+- name: Ensure admin groups exist
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ users_admin_groups }}"
+
+- name: Create admin user
+  ansible.builtin.user:
+    name: "{{ users_users_admin_user }}"
+    groups: "{{ admin_groups | join(',') }}"
+    append: true
+    shell: /bin/bash
+    create_home: true
+    state: present
+
+- name: Set authorized SSH keys for admin user
+  ansible.posix.authorized_key:
+    user: "{{ users_users_admin_user }}"
+    key: "{{ item }}"
+    state: present
+    exclusive: false
+  loop: "{{ users_ssh_authorized_keys }}"
+  when: ssh_authorized_keys | length > 0
+
+- name: Configure passwordless sudo for admin user
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers.d/{{ users_users_admin_user }}"
+    line: "{{ users_users_admin_user }} ALL=(ALL) NOPASSWD:ALL"
+    create: true
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+- name: Remove default/insecure users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+    remove: true
+  loop: "{{ users_to_remove }}"
+  when: remove_default_users and users_to_remove | length > 0

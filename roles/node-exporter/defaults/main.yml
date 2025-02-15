@@ -1,0 +1,11 @@
+---
+# Node Exporter role defaults
+
+# Version of node_exporter to install
+node_exporter_version: "1.8.2"
+
+# Port node_exporter listens on
+node_exporter_port: 9100
+
+# Directory for textfile collector metrics
+node_exporter_textfile_dir: "/var/lib/node_exporter/textfile_collector"
