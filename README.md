@@ -190,3 +190,5 @@ ansible-playbook playbooks/site.yml --ask-vault-pass
 ```
 
 - After changing `ssh_port`, update `firewall_allowed_ports` to match, or you will lock yourself out.
+
+<sub><sup>Originally developed and tested locally during learning. Later organized and pushed to GitHub for portfolio visibility.</sup></sub>
